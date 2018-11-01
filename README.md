@@ -1,10 +1,16 @@
 # gomets
 Simple utility to retrieve AWS instance metadata and other useful info with a oneliner.
 
+## Installation
+Grab a release from the releases section and do a wget or something like:
+
+```
+wget https://github.com/rendicott/gomets/releases/download/v0.2/gomets
+chmod +x gomets
+```
+
 ## Usage
 ```
-$ wget http://files.bytester.net/gomets
-$ chmod +x gomets
 $ ./gomets
 {
     "Metadata": {
@@ -29,7 +35,7 @@ $ ./gomets
 
 If you add the `-tags` flag it will attempt to do an EC2 DescribeTags on its own instance-id.
 ```
-[ec2-user@ip-192-168-46-110 tmp]$ ./gomets -tags
+$ ./gomets -tags
 {
     "Metadata": {
         "devpayProductCodes": null,
@@ -64,3 +70,9 @@ If you add the `-tags` flag it will attempt to do an EC2 DescribeTags on its own
 }
 ```
 
+Then you can do things like grab the instance `Name` tag with a `jq` oneliner:
+
+```
+$ ./gomets -tags | jq '.Tags[] | select(.Key=="Name") | .Value'
+"ansible-tester"
+```
